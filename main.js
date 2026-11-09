@@ -2,6 +2,8 @@
   const S = window.SITE;
   const C = S.cs2;
   const PAGE = document.body.dataset.page || "home";
+  // Discord só aparece com um convite de verdade
+  const temDiscord = /^https?:\/\/(discord\.gg|discord\.com\/invite)\/(?!seu-convite)[\w-]+/.test(S.discord || "");
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const fmt = (n, d = 0) => n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -93,7 +95,7 @@
       ${divider}
       <h2 class="cta__title metal">${split(title)}</h2>
       <p class="sdesc reveal">${text}</p>
-      <div class="btns reveal"><a class="btn btn--solid" href="servidores.html">Entrar nos servidores</a><a class="btn" href="${S.discord}" target="_blank" rel="noopener">Discord</a></div>
+      <div class="btns reveal"><a class="btn btn--solid" href="servidores.html">Entrar nos servidores</a>${temDiscord ? `<a class="btn" href="${S.discord}" target="_blank" rel="noopener">Discord</a>` : ""}</div>
     </section>`;
 
   /* =========================================================
@@ -110,7 +112,7 @@
       <header class="hdr" id="hdr">
         <a href="index.html" class="brand"><span class="brand__mark">C</span><span class="brand__txt">${S.nome}<small>${S.cargo}</small></span></a>
         <nav class="hdr__nav">${navLinks}</nav>
-        <a href="${S.discord}" class="hdr__cta" target="_blank" rel="noopener"><span></span>Entrar no Discord</a>
+        ${temDiscord ? `<a href="${S.discord}" class="hdr__cta" target="_blank" rel="noopener"><span></span>Entrar no Discord</a>` : `<a href="servidores.html" class="hdr__cta"><span></span>Jogar agora</a>`}
         <button class="burger" id="burger" aria-label="Menu"><span></span><span></span></button>
       </header>
       <div class="menu" id="menu">${navLinks}</div>`);
@@ -119,7 +121,7 @@
         ${divider}
         <h2 class="ftr__big metal">${S.nome}</h2>
         <nav class="ftr__nav">${NAV.map((n) => `<a href="${n.href}">${n.label}</a>`).join("")}</nav>
-        <div class="ftr__social">${S.redes.map((r) => `<a class="btn" href="${r.link}" target="_blank" rel="noopener">${r.nome}</a>`).join("")}</div>
+        <div class="ftr__social">${S.redes.filter((r) => /^https?:\/\//.test(r.link) && !/seu-convite/.test(r.link)).map((r) => `<a class="btn" href="${r.link}" target="_blank" rel="noopener">${r.nome}</a>`).join("")}</div>
         <p class="ftr__copy">© ${new Date().getFullYear()} ${S.nome} · a.k.a. ${S.nick} no jogo</p>
       </footer>
       <div class="toast" id="toast"></div>
@@ -159,7 +161,7 @@
         ${numbered(S.oQueFaco)}
       </section>
 
-      ${cta("Bora jogar junto", "Os servidores 5v5 de CS2 e de Minecraft estão abertos. Entra lá ou chama no Discord.")}`;
+      ${cta("Bora jogar junto", "Os servidores 5v5 de CS2 e de Minecraft estão abertos. Bora jogar!")}`;
     },
 
     projetos() {
@@ -188,7 +190,7 @@
             </article>`).join("")}
         </div>
       </section>
-      ${cta("Tem uma ideia", "Quer trocar ideia sobre algum projeto ou fazer algo junto? Me chama no Discord.")}`;
+      ${cta("Tem uma ideia", "Quer trocar ideia sobre algum projeto ou fazer algo junto? Me chama nas redes.")}`;
     },
 
     videos() {
@@ -279,7 +281,7 @@
         <div class="srvs" id="srvs">
           ${S.servidores.map((s) => {
             const ativo = pronto && !s.breve;
-            const end = !ativo ? "em breve" : oculto ? "peça no Discord" : IP + (s.porta && s.porta !== 25565 ? ":" + s.porta : "");
+            const end = !ativo ? "em breve" : oculto ? "" : IP + (s.porta && s.porta !== 25565 ? ":" + s.porta : "");
             const cs = s.categoria === "cs2";
             return `<article class="srv reveal" data-cat="${s.categoria}" ${ativo && s.id ? `data-id="${s.id}"` : ""}>
               <div class="srv__game">${s.jogo === "Minecraft" ? "MC" : s.jogo === "Outros" ? "✦" : s.jogo}</div>
@@ -289,13 +291,12 @@
                 <p class="srv__game-name">${s.jogo}<span class="srv__players"></span></p>
                 <ul>${s.infos.map((x) => `<li>${x}</li>`).join("")}</ul>
               </div>
-              <div class="srv__ip"><small>Endereço</small><code>${end}</code>${ativo && s.entrar ? `<small class="srv__cmd">depois digite <code>${s.entrar}</code></small>` : ""}</div>
+              ${oculto && ativo ? (s.entrar ? `<div class="srv__ip"><small>No servidor</small><small class="srv__cmd">digite <code>${s.entrar}</code></small></div>` : `<div class="srv__ip"></div>`) : `<div class="srv__ip"><small>Endereço</small><code>${end}</code>${ativo && s.entrar ? `<small class="srv__cmd">depois digite <code>${s.entrar}</code></small>` : ""}</div>`}
               <div class="srv__btns">
                 ${ativo && !oculto ? `<button class="btn" data-copy="${cs ? "connect " + end : end}">Copiar IP</button>` : ""}
                 ${ativo && !oculto && cs ? `<a class="btn btn--solid" href="steam://connect/${end}">Entrar</a>` : ""}
-                ${ativo && oculto ? `<a class="btn btn--solid" href="${S.discord}" target="_blank" rel="noopener">Pedir IP no Discord</a>` : ""}
                 ${s.extra ? `<a class="btn" href="${s.extra.url}">${s.extra.label}</a>` : ""}
-                ${!ativo ? `<a class="btn" href="${S.discord}" target="_blank" rel="noopener">Avisar no Discord</a>` : ""}
+                ${!ativo && temDiscord ? `<a class="btn" href="${S.discord}" target="_blank" rel="noopener">Avisar no Discord</a>` : ""}
               </div>
             </article>`;
           }).join("")}
@@ -304,18 +305,18 @@
       <section class="sec">
         ${head("Passo a passo", "Como entrar")}
         ${numbered(oculto ? [
-          { titulo: "Discord", texto: "Entre no Discord e peça o IP dos servidores. Lá também marcamos partidas." },
-          { titulo: "CS2", texto: "Abra o console (tecla ') e digite connect com o IP que te passarem." },
-          { titulo: "Minecraft", texto: "Multijogador → Adicionar servidor → cole o IP. Faça /register na primeira vez e use /server survival, bedwars ou criativo." },
-          { titulo: "Hollow Scripture", texto: "Instale o NeoForge 1.20.1 e o mod, depois entre pelo IP do Hollow." },
+          { titulo: "CS2", texto: "Abra o console (tecla ') e use o comando connect com o endereço do servidor." },
+          { titulo: "Minecraft", texto: "Multijogador → Adicionar servidor. Na primeira vez faça /register; depois use /server survival, bedwars ou criativo." },
+          { titulo: "Hollow Scripture", texto: "Instale o NeoForge 1.20.1 e o mod (página Projetos) antes de entrar." },
+          { titulo: "Status", texto: "Esta página mostra ao vivo quem está online em cada servidor." },
         ] : [
           { titulo: "CS2", texto: "Clique em Entrar, ou copie o IP, abra o console (tecla ') e cole o connect." },
           { titulo: "Minecraft", texto: "Multijogador → Adicionar servidor → cole o IP. No lobby, use /server survival, bedwars ou criativo." },
           { titulo: "Hollow Scripture", texto: "Instale o NeoForge 1.20.1 e o mod, depois entre pelo IP com :25566." },
-          { titulo: "Discord", texto: "Entre no Discord para marcar partidas e ver novidades." },
+          ...(temDiscord ? [{ titulo: "Discord", texto: "Entre no Discord para marcar partidas e ver novidades." }] : []),
         ])}
       </section>
-      ${cta("Te vejo no servidor", "Qualquer problema para entrar, me chama no Discord.")}`;
+      ${cta("Te vejo no servidor", "Qualquer problema para entrar, me chama nas redes.")}`;
     },
 
     sobre() {
@@ -330,7 +331,7 @@
         ${head("Conquistas", "Troféus", "A estante ainda está vazia. <em>Por enquanto.</em>")}
         <div class="shelf">${S.trofeus.map((t) => `<div class="trophy reveal"><div class="trophy__cup">${cup}</div><h4>${t.nome}</h4><p>${t.dica}</p></div>`).join("")}</div>
       </section>
-      ${cta("Vamos conversar", "Projetos, partidas ou edições: o Discord é o melhor lugar pra me achar.")}`;
+      ${cta("Vamos conversar", "Projetos, partidas ou edições: me acha nas redes aí embaixo.")}`;
     },
   };
 

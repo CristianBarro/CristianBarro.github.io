@@ -6,7 +6,7 @@ window.SITE = {
   nick: "CHELO", // nick de zoeira dentro do jogo
   cargo: "Criador",
   frase: "Crio jogos, mods, assistentes de IA e edições de vídeo. E cuido dos servidores pra galera jogar junto.",
-  discord: "https://discord.gg/seu-convite",
+  discord: "",   // link de convite do Discord (vazio = nada de Discord aparece no site)
   youtube: "https://www.youtube.com/@foxytech7226",
   github: "https://github.com/CristianBarro",
 
@@ -193,7 +193,7 @@ window.SITE = {
 
   // ---------- Servidores (kit em E:\servidores) ----------
   // Depois de rodar o install.sh na VPS, cole aqui o que ele mostrar no final:
-  // Vazio = IP não aparece no site (status continua; botão "Pedir IP no Discord")
+  // Vazio = IP não aparece no site (o status ao vivo continua)
   servidoresIP: "",
   statusUrl: "https://status.badlands.info/status",
 
@@ -245,7 +245,7 @@ window.SITE = {
       jogo: "Outros",
       categoria: "outros",
       breve: true,
-      infos: ["Mais jogos chegando", "Sugestões no Discord"],
+      infos: ["Mais jogos chegando"],
     },
   ],
 
@@ -253,7 +253,6 @@ window.SITE = {
     { nome: "YouTube", link: "https://www.youtube.com/@foxytech7226" },
     { nome: "GitHub", link: "https://github.com/CristianBarro" },
     { nome: "Steam", link: "https://steamcommunity.com/profiles/76561199433128268" },
-    { nome: "Discord", link: "https://discord.gg/seu-convite" },
     { nome: "csstats", link: "https://csstats.gg/player/76561199433128268" },
   ],
 };
