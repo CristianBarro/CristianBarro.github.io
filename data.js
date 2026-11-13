@@ -17,7 +17,7 @@ window.SITE = {
   ],
   fatos: [
     { valor: "7", rotulo: "Projetos" },
-    { valor: "2", rotulo: "Jogos para baixar" },
+    { valor: "3", rotulo: "Para baixar" },
     { valor: "3", rotulo: "Edições publicadas" },
     { valor: "∞", rotulo: "Ideias na fila" },
   ],
@@ -85,9 +85,15 @@ window.SITE = {
       sub: "Launcher de Minecraft",
       tag: "App · Minecraft",
       img: "img/absolute-launcher.jpg",
-      status: "dev",
+      status: "disponivel",
+      versao: "0.1.0",
       texto: "Launcher de Minecraft Java leve, feito em Tauri e Rust. Instâncias separadas, Fabric, Forge e NeoForge, mods do Modrinth direto pelo app e pacote de desempenho em um clique.",
-      itens: ["Tauri + Rust", "Modrinth", "Fabric/Forge", "Leve"],
+      itens: ["Windows", "Fabric/Forge/NeoForge", "Modrinth", "Leve"],
+      downloads: [
+        { label: "Instalador", info: ".exe · 2,5 MB", url: "https://github.com/CristianBarro/absolute-launcher/releases/download/v0.1.0/Absolute-Launcher-0.1.0-setup.exe" },
+        { label: "Portátil", info: ".exe · 7,3 MB", url: "https://github.com/CristianBarro/absolute-launcher/releases/download/v0.1.0/Absolute-Launcher-0.1.0-portatil.exe" },
+      ],
+      repo: "https://github.com/CristianBarro/absolute-launcher",
     },
     {
       titulo: "Edições de vídeo",
